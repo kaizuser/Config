@@ -1,0 +1,85 @@
+;; Widgets for Kaizuser
+
+
+
+;; Variables **********
+
+
+
+;; System vars
+(defpoll HOST :interval "5s" `hostname`)
+
+(defpoll CPU_USAGE :interval "1s" `../scripts/sys-info --cpu`)
+
+(defpoll MEM_USAGE :interval "1s" `../scripts/sys-info --mem`)
+
+(defpoll DISK_USAGE :interval "1s" `../scripts/sys-info --disk`)
+
+(defpoll BLIGHT :interval "1s" `../scripts/sys-info --blight`)
+
+(defpoll TIME :interval "1m" "../scripts/time")
+
+
+
+;; Widgets ************
+
+
+
+;; resources
+(defwidget resources [] 
+		(box :class "winbox" 
+			(centerbox :orientation "h"
+				(box :class "res_box" :orientation "h" :valign "center" :halign "center" :spacing 15 :space-evenly "false"
+					(box :class "res_circle" :orientation "v" :valign "center" :halign "center"
+						(circular-progress :class "res_cpu" :value CPU_USAGE :thickness 5
+							(label :class "res_circle_small" :text "CPU")))
+					(label :class "res_text" :valign "end" :halign "center" :text "${CPU_USAGE}%"))
+				(box :class "res_box marginx" :orientation "h" :valign "center" :halign "center" :spacing 15 :space-evenly "false"
+					(box :class "res_circle" :orientation "v" :valign "center" :halign "center"
+						(circular-progress :class "res_mem" :value MEM_USAGE :thickness 5
+							(label :class "res_circle_small" :text "MEM")))
+					(label :class "res_text" :valign "end" :halign "center" :text "${MEM_USAGE}%"))
+				(box :class "res_box" :orientation "h" :valign "center" :halign "center" :spacing 15 :space-evenly "false"
+					(box :class "res_circle" :orientation "v" :valign "center" :halign "center"
+						(circular-progress :class "res_disk" :value DISK_USAGE :thickness 5
+							(label :class "res_circle_small" :text "DISK")))
+					(label :class "res_text" :valign "end" :halign "center" :text "${DISK_USAGE}%")))))
+;; quotes
+(defwidget quotes [] 
+		(box :class "winbox"
+			(box :class "quote_box" :orientation "h" :valign "center" :halign "center" :spacing 10 :space-evenly "false"
+				(label :class "quote_text" :valign "center" :halign "center" :text TIME :wrap true :limit-width 90 ))))
+
+
+
+;; Windows ************
+
+
+
+;; resources
+(defwindow resources
+           :monitor 0
+           :geometry (geometry :x "486px"
+                               :y "7px"
+                               :width "180px"
+                               :height "37px"
+                               :anchor "top left")
+
+           :reserve (struts :distance "33px" :side "top")
+           :stacking "fg"
+           :wm-ignore true
+(resources))
+
+;; quotes
+(defwindow quotes
+           :monitor 0
+           :geometry (geometry :x "1140px"
+                               :y "6px"
+                               :width "286px"
+                               :height "37px"
+                               :anchor "top left")
+
+           :reserve (struts :distance "33px" :side "top")
+           :stacking "fg"
+           :wm-ignore true
+(quotes))

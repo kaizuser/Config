@@ -1,0 +1,5 @@
+#!/bin/bash
+
+time="$(timedatectl | head -n1 | awk '{print $3" "$5}')"
+
+echo "$time"

@@ -1,0 +1,84 @@
+;; Widgets for Kaizuser
+
+
+
+;; VARIABLES **********
+
+
+
+;; Battery vars
+(defpoll BATICON :interval "1m" `./scripts/battery --icon`)
+(defpoll BATPERC :interval "1m" `./scripts/battery --perc`)
+
+;; Volume vars
+(defpoll VOLICON :interval "1s" `./scripts/volume --icon`)
+(defpoll VOLUME :interval "1s" `./scripts/volume --get`)
+
+;; Network
+(defpoll WIFIICON :interval "10s" `./scripts/check-network --icon`)
+(defpoll NETSTAT :interval "10s" `./scripts/check-network --stat`)
+
+;; System info
+(defpoll CPU :interval "10s" `./scripts/sys-info --cpu`)
+(defpoll RAM :interval "10s" `./scripts/sys-info --mem`)
+(defpoll DISK :interval "10s" `./scripts/sys-info --disk`)
+(defpoll BLIGHT :interval "10s" `./scripts/sys-info --blight`)
+
+;; User
+(defvar USERICON './images/profile.jpg')
+(defpoll USER :interval "1m" 'whoami')
+
+
+
+;; WIDGETS ************
+
+
+
+(defwidget system [] 
+		(box :class "container-box"
+			(box :orientation "h" :spacing 10 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+				(button :onclick "./scripts/widget_apps --pow" :style "border:none"
+					(box :orientation "h" :spacing 8 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+						(box :style "background-image: url('${BATICON}');" :class "trayicon")
+							(label :class "infotext" :halign "start" :text BATPERC)))
+				(button :onclick "./scripts/volume --toggle" :style "border:none"
+					(box :orientation "h" :spacing 8 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+						(box :style "background-image: url('${VOLICON}');" :class "trayicon")
+							(label :class "infotext" :halign "start" :text VOLUME)))
+				(button :onclick "./scripts/widget_apps --nm" :style "border:none"
+					(box :orientation "h" :spacing 8 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+						(box :style "background-image: url('${WIFIICON}');" :class "trayicon")
+							(label :class "infotext" :halign "start" :text NETSTAT)))
+				(button :onclick "~/.config/eww/sidebar/toggle-sidedar" :style "border:none"
+					(box :orientation "h" :spacing 8 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+						(box :style "background-image: url('${USERICON}');" :class "face")
+							(label :class "infotext" :halign "start" :text USER))))))
+
+
+
+;; WINDOWS ************
+
+
+
+;; System
+(defwindow system
+           :monitor 0
+           :geometry (geometry :x "1430px"
+                               :y "0px"
+                               :width "480px"
+                               :height "40px"
+                               :anchor "top left")
+           :stacking "fg"
+           :reserve (struts :distance "40px" :side "top")
+           :windowtype "dock"
+           :wm-ignore true
+(system))
+
+
+
+
+
+
+
+
+

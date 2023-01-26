@@ -1,0 +1,41 @@
+* {
+	font-family: "Space Mono";
+	font-style: italic;
+	font-weight: bold;
+	all:unset;
+}
+
+.container-box {
+	border:1px solid #161616;
+	border-radius: 12px;
+	background-color: #303030;
+	padding:0px 10px 0 10px
+}
+
+.trayicon {
+        background-repeat: no-repeat;
+	background-size: 24px;
+	min-height: 24px;
+	min-width: 24px;
+	margin: 8px 0px 0px 0px;
+	color:white;
+}
+
+.infotext {
+	background-color: #40403f;
+	border: 0px solid #161616;
+	border-radius: 16px;
+	font-size : 14px;
+	padding: 0px 5px 0px 5px;
+	margin: 10px 0px 10px 0px;
+	font-weight : bold;
+	color:#08f610;
+}
+
+.face {
+	background-size: 40px;
+	min-height: 25px;
+	min-width: 25px;
+	margin: 8px 0px 8px 0px;
+	border-radius: 100%;
+}
