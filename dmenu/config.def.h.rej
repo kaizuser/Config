@@ -1,0 +1,10 @@
+--- config.def.h
++++ config.def.h
+@@ -12,6 +12,7 @@ static const char *colors[SchemeLast][2] = {
+ 	[SchemeNorm] = { "#000000", "#000000" },
+ 	[SchemeSel] = { "#eeeeee", "#000000" },
+ 	[SchemeOut] = { "#000000", "#000000" },
++	[SchemeHp] = { "#000000", "#000000" }
+ };
+ /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
+ static unsigned int lines      = 0;
