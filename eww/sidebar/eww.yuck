@@ -19,6 +19,8 @@
 
 (defpoll TIME :interval "1m" "../scripts/time")
 
+(defpoll TEMP :interval "1m" "../scripts/temperature")
+
 
 
 ;; Widgets ************
@@ -32,23 +34,28 @@
 				(box :class "res_box" :orientation "h" :valign "center" :halign "center" :spacing 15 :space-evenly "false"
 					(box :class "res_circle" :orientation "v" :valign "center" :halign "center"
 						(circular-progress :class "res_cpu" :value CPU_USAGE :thickness 5
-							(label :class "res_circle_small" :text "CPU")))
-					(label :class "res_text" :valign "end" :halign "center" :text "${CPU_USAGE}%"))
+							(label :class "res_circle_small" :text "CPU"))))
 				(box :class "res_box marginx" :orientation "h" :valign "center" :halign "center" :spacing 15 :space-evenly "false"
 					(box :class "res_circle" :orientation "v" :valign "center" :halign "center"
 						(circular-progress :class "res_mem" :value MEM_USAGE :thickness 5
-							(label :class "res_circle_small" :text "MEM")))
-					(label :class "res_text" :valign "end" :halign "center" :text "${MEM_USAGE}%"))
+							(label :class "res_circle_small" :text "MEM"))))
 				(box :class "res_box" :orientation "h" :valign "center" :halign "center" :spacing 15 :space-evenly "false"
 					(box :class "res_circle" :orientation "v" :valign "center" :halign "center"
 						(circular-progress :class "res_disk" :value DISK_USAGE :thickness 5
-							(label :class "res_circle_small" :text "DISK")))
-					(label :class "res_text" :valign "end" :halign "center" :text "${DISK_USAGE}%")))))
+							(label :class "res_circle_small" :text "DISK")))))))
 ;; quotes
 (defwidget quotes [] 
-		(box :class "winbox"
-			(box :class "quote_box" :orientation "h" :valign "center" :halign "center" :spacing 10 :space-evenly "false"
-				(label :class "quote_text" :valign "center" :halign "center" :text TIME :wrap true :limit-width 90 ))))
+	(box :class "container-box"
+		(box :orientation "h" :spacing 10 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+			(box :orientation "h" :spacing 8 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+				(box :style "background-image: url('../images/icons/brigthness.png');" :class "trayicon")
+					(label :class "infotext" :halign "start" :text "${BLIGHT}%"))
+			(box :orientation "h" :spacing 8 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+				(box :style "background-image: url('../images/icons/clock.png');" :class "trayicon")
+					(label :class "infotext" :halign "start" :text TIME))
+			(box :orientation "h" :spacing 8 :valign "center" :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+				(box :style "background-image: url('../images/icons/temperature.png');" :class "trayicon")
+					(label :class "infotext" :halign "start" :text TEMP)))))
 
 
 
@@ -59,10 +66,10 @@
 ;; resources
 (defwindow resources
            :monitor 0
-           :geometry (geometry :x "486px"
-                               :y "7px"
-                               :width "180px"
-                               :height "37px"
+           :geometry (geometry :x "490px"
+                               :y "0px"
+                               :width "279px"
+                               :height "43px"
                                :anchor "top left")
 
            :reserve (struts :distance "33px" :side "top")
@@ -73,10 +80,10 @@
 ;; quotes
 (defwindow quotes
            :monitor 0
-           :geometry (geometry :x "1140px"
-                               :y "6px"
-                               :width "286px"
-                               :height "37px"
+           :geometry (geometry :x "1142px"
+                               :y "0px"
+                               :width "279px"
+                               :height "43px"
                                :anchor "top left")
 
            :reserve (struts :distance "33px" :side "top")

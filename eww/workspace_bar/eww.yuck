@@ -31,10 +31,10 @@
 ;; System
 (defwindow workspacebar
            :monitor 0
-           :geometry (geometry :x "10px"
+           :geometry (geometry :x "14px"
                                :y "0px"
                                :width "472px"
-                               :height "44px"
+                               :height "43px"
                                :anchor "top left")
            :stacking "fg"
            :reserve (struts :distance "40px" :side "top")

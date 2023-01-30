@@ -1,5 +1,6 @@
 #!/bin/bash
 
-time="$(timedatectl | head -n1 | awk '{print $3" "$5}')"
+time="$(timedatectl | head -n1 | awk '{print $5}')"
+final_time=${time:0:5}
 
-echo "$time"
+echo "$final_time"
