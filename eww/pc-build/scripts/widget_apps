@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ "$1" == "--pow" ]]; then
+	xfce4-power-manager-settings &
+
+elif [[ "$1" == "--nm" ]]; then
+	networkmanager_dmenu
+
+fi

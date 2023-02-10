@@ -74,7 +74,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_Return     ), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_r     ), spawn "dmenu_run -l 13 -h 70 -x 1700 -y 20 -fn 'Ubuntu Mono Nerd Font'")
+    , ((modm,               xK_r     ), spawn "rofi -show drun")
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
@@ -175,7 +175,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Full
+myLayout = tiled ||| Full ||| Mirror (Tall 1 (3/100) (3/5))
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -240,12 +240,12 @@ myLogHook = return ()
 -- By default, do nothing.
 myStartupHook = do
         spawn "setxkbmap -model pc105 -layout latam"
-	spawn "feh --bg-scale ~/Pictures/wallpaperflare.com_wallpaper.jpg"
+	spawn "feh --bg-scale ~/Imágenes/kaneki.png"
 	spawn "picom &"
 	spawn "eww open system"
 	spawn "eww --config ~/.config/eww/sidebar open-many resources quotes"
 	spawn "eww --config ~/.config/eww/workspace_bar open workspacebar"
-	spawn "gnome-terminal --geometry 45x2+774+6 -e 'cava'"
+	spawn "gnome-terminal --geometry 45x2+774+3 -e 'cava'"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.

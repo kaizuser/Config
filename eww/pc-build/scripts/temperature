@@ -1,0 +1,6 @@
+#!/bin/bash
+
+temp=`sensors 'k10temp-pci-00c3' | tail -n2 | awk '{print $2}'`
+final_temp=${temp:1:7}
+
+echo "$final_temp"
