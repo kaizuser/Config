@@ -11,6 +11,18 @@ import XMonad
 import Data.Monoid
 import System.Exit
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
+import XMonad.Util.NamedScratchpad
+import XMonad.Util.NamedActions
+import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
+import System.IO (hClose, hPutStr, hPutStrLn)
+import XMonad.Hooks.UrgencyHook (withUrgencyHook, NoUrgencyHook(..))
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
+import XMonad.Hooks.ManageDocks
+import XMonad.Actions.UpdatePointer
 
 -- Key bindings
 
@@ -58,7 +70,7 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaces    = ["\61728","\62003","\63449","\61556","\63077"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -137,7 +149,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-shift-[1..9], Move client to workspace N
     --
     [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_5]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
 
     --
@@ -227,8 +239,8 @@ myEventHook = mempty
 
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
---
-myLogHook = return ()
+
+myLogHook = return()
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -244,7 +256,6 @@ myStartupHook = do
 	spawn "picom &"
 	spawn "eww open system"
 	spawn "eww --config ~/.config/eww/sidebar open-many resources quotes"
-	spawn "eww --config ~/.config/eww/workspace_bar open workspacebar"
 	spawn "gnome-terminal --geometry 45x2+774+3 -e 'cava'"
 
 ------------------------------------------------------------------------
@@ -252,36 +263,57 @@ myStartupHook = do
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ ewmh $ defaults
+-- The main function.
+main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
 
--- A structure containing your configuration settings, overriding
--- fields in the default config. Any you don't override, will
--- use the defaults defined in xmonad/XMonad/Config.hs
---
--- No need to modify this.
---
+-- Command to launch the bar.
+myBar = "xmobar"
+
+-- Custom PP, configure it as you like. It determines what is being written to the bar.
+myPP = xmobarPP {	
+	ppCurrent = xmobarColor "#08f610" ""
+	. wrap ("<hspace=50/>") ""
+
+	-- Hidden workspace
+
+	, ppHidden = xmobarColor "#000000" "" . wrap ("<hspace=50/>") ""
+
+	-- Hidden workspaces (no windows)
+
+	, ppHiddenNoWindows = xmobarColor "#000000" "" . wrap ("<hspace=50/>") ""
+
+	, ppLayout = const ""
+
+	, ppTitle = const "" 
+}
+
+-- Key binding to toggle the gap for the bar.
+toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+
+
+
 defaults = def {
-      -- simple stuff
-        terminal           = myTerminal,
-        focusFollowsMouse  = myFocusFollowsMouse,
-        clickJustFocuses   = myClickJustFocuses,
-        borderWidth        = myBorderWidth,
-        modMask            = myModMask,
-        workspaces         = myWorkspaces,
-        normalBorderColor  = myNormalBorderColor,
-        focusedBorderColor = myFocusedBorderColor,
+		terminal           = myTerminal,
+		focusFollowsMouse  = myFocusFollowsMouse,
+		clickJustFocuses   = myClickJustFocuses,
+		borderWidth        = myBorderWidth,
+		modMask            = myModMask,
+		workspaces         = myWorkspaces,
+		normalBorderColor  = myNormalBorderColor,
+		focusedBorderColor = myFocusedBorderColor,
 
-      -- key bindings
-        keys               = myKeys,
-        mouseBindings      = myMouseBindings,
+		-- key bindings
+		keys               = myKeys,
+		mouseBindings      = myMouseBindings,
 
-      -- hooks, layouts
-        layoutHook         = spacingRaw False (Border 45 4 4 4) True (Border 10 10 10 10) True $ myLayout,
-        manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
-        logHook            = myLogHook,
-        startupHook        = myStartupHook
-    }
+		-- hooks, layouts
+		layoutHook         = spacingRaw False (Border 4 4 4 4) True (Border 10 10 10 10) True $ myLayout,
+		manageHook         = myManageHook,
+		handleEventHook    = myEventHook,
+		startupHook        = myStartupHook,
+		logHook            = myLogHook
+
+}
 
 	`additionalKeysP`
 
@@ -295,6 +327,8 @@ defaults = def {
 	, ("M-<Down>", windows W.focusUp)
 
 	]
+
+
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
@@ -346,3 +380,5 @@ help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "mod-button1  Set the window to floating mode and move by dragging",
     "mod-button2  Raise the window to the top of the stack",
     "mod-button3  Set the window to floating mode and resize by dragging"]
+
+

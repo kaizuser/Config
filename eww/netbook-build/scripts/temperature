@@ -1,6 +1,0 @@
-#!/bin/bash
-
-temp=`sensors 'coretemp-isa-0000' | head -n3 | awk '{print $4}'`
-final_temp=${temp:3:6}
-
-echo "$final_temp"
