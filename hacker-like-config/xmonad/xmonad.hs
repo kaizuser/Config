@@ -23,6 +23,9 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.ManageDocks
 import XMonad.Actions.UpdatePointer
+import XMonad.Config.Xfce
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Actions.ToggleFullFloat
 
 -- Key bindings
 
@@ -80,7 +83,7 @@ myFocusedBorderColor = "#08f610"
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ 
 
     -- launch a terminal
     [ ((modm, xK_Return     ), spawn $ XMonad.terminal conf)
@@ -141,6 +144,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+
+    ,  ((modm, xK_o), withFocused toggleFullFloat)
+
     ]
     ++
 
@@ -187,7 +193,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Full ||| Mirror (Tall 1 (3/100) (3/5))
+myLayout = tiled ||| Full ||| Mirror (Tall 1 (3/100) (3/5)) 
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -221,7 +227,12 @@ myManageHook = composeAll
     , className =? "Gimp"           --> doFloat
     , className =? "Gnome-terminal" --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    , className =? "Android Emulator - Pixel_5_API_33:5554" --> doIgnore
+    , className =? "Chromium" --> doFloat
+    , className =? "chromium" --> doFloat
+    , manageDocks
+    , manageHook def]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -252,19 +263,21 @@ myLogHook = return()
 -- By default, do nothing.
 myStartupHook = do
         spawn "setxkbmap -model pc105 -layout latam"
-	spawn "feh --bg-scale ~/Imágenes/kaneki.png"
-	spawn "picom &"
-	spawn "eww open system"
-	spawn "eww --config ~/.config/eww/sidebar open-many resources quotes"
-	spawn "gnome-terminal --geometry 45x2+774+3 -e 'cava'"
-
+        spawn "feh --bg-scale ~/Imágenes/kaneki.png"
+        spawn "picom &"
+        spawn "eww open system"
+        spawn "eww --config ~/.config/eww/sidebar open-many resources quotes"
+        spawn "gnome-terminal --geometry 45x2+774+3 -e 'cava'"
+	spawn "alacritty"
+	spawn "alacritty"
+	spawn "alacritty"
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 -- The main function.
-main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
+main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults 
 
 -- Command to launch the bar.
 myBar = "xmobar"
@@ -309,7 +322,7 @@ defaults = def {
 		-- hooks, layouts
 		layoutHook         = spacingRaw False (Border 4 4 4 4) True (Border 10 10 10 10) True $ myLayout,
 		manageHook         = myManageHook,
-		handleEventHook    = myEventHook,
+		handleEventHook    = myEventHook, --fullscreenEventHook,
 		startupHook        = myStartupHook,
 		logHook            = myLogHook
 
