@@ -73,8 +73,8 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["\61728","\62003","\63449","\61556","\63077"]
-
+myWorkspaces    = ["\61729", "\62003","\61556","\61749","\61549"]
+-- > 
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor  = "#dddddd"
@@ -110,10 +110,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_m     ), spawn "~/.config/eww/scripts/open_system")
 
     -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
+    , ((modm .|. shiftMask, xK_Down     ), windows W.swapDown  )
 
     -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+    , ((modm .|. shiftMask, xK_Up     ), windows W.swapUp    )
 
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
@@ -225,12 +225,10 @@ myLayout = tiled ||| Full ||| Mirror (Tall 1 (3/100) (3/5))
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
-    , className =? "Gnome-terminal" --> doIgnore
-    , resource  =? "desktop_window" --> doIgnore
+    , className =? "XTerm"          --> doIgnore
+    , resource  =? "dxesktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "Android Emulator - Pixel_5_API_33:5554" --> doIgnore
-    , className =? "Chromium" --> doFloat
-    , className =? "chromium" --> doFloat
     , manageDocks
     , manageHook def]
 
@@ -263,11 +261,11 @@ myLogHook = return()
 -- By default, do nothing.
 myStartupHook = do
         spawn "setxkbmap -model pc105 -layout latam"
-        spawn "feh --bg-scale ~/Imágenes/kaneki.png"
+        spawn "feh --bg-scale ~/Images/wallpaper.jpg"
         spawn "picom &"
         spawn "eww open system"
         spawn "eww --config ~/.config/eww/sidebar open-many resources quotes"
-        spawn "gnome-terminal --geometry 45x2+774+3 -e 'cava'"
+	spawn "xterm -geometry 45x2+774+3 -e cava"
 	spawn "alacritty"
 	spawn "alacritty"
 	spawn "alacritty"
@@ -285,15 +283,15 @@ myBar = "xmobar"
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP {	
 	ppCurrent = xmobarColor "#08f610" ""
-	. wrap ("<hspace=50/>") ""
+	. wrap ("<hspace=44/>") ""
 
 	-- Hidden workspace
 
-	, ppHidden = xmobarColor "#000000" "" . wrap ("<hspace=50/>") ""
+	, ppHidden = xmobarColor "#000000" "" . wrap ("<hspace=44/>") ""
 
 	-- Hidden workspaces (no windows)
 
-	, ppHiddenNoWindows = xmobarColor "#000000" "" . wrap ("<hspace=50/>") ""
+	, ppHiddenNoWindows = xmobarColor "#000000" "" . wrap ("<hspace=44/>") ""
 
 	, ppLayout = const ""
 

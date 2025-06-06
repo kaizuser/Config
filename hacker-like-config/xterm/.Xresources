@@ -1,0 +1,14 @@
+! Set a font with good Unicode support
+XTerm*faceName: DejaVu Sans Mono
+XTerm*faceSize: 10
+XTerm*utf8: 1
+XTerm*locale: true
+
+! Disable scrollbar
+XTerm*scrollBar: false
+
+! Remove internal borders
+XTerm*internalBorder: 0
+
+
+
